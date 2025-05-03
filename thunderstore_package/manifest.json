@@ -1,6 +1,6 @@
 {
-    "name": "mm_bigger_wallets",
-    "version_number": "1.0.0",
+    "name": "Bigger_Wallet",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/LT-Schmiddy/zelda64recomp-wallet-size-mod",
     "description": "Link's wallets now hold more rupees.",
     "dependencies": [

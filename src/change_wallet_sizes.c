@@ -7,7 +7,6 @@
 #include "eztr_api.h"
 #include "x_eztr_msg_macros.h"
 
-
 RECOMP_CALLBACK("*", recomp_after_play_init) void modify_upgrade_table(PlayState* this) {
 
     gUpgradeCapacities[UPG_WALLET][0] = 200;
