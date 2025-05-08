@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      submodules: 'recursive'
     - name: Set up build tools
       run: |-
-        sudo apt install -y clang lld ninja-build python
+        sudo apt install -y clang lld ninja-build python3
     - name: run-buildscript
       run: |-
         python3 ./create_thunderstore_package.py
