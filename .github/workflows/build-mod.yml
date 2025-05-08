@@ -41,9 +41,9 @@ jobs:
       with:
         namespace: LT_Schmiddy 
         token: ${{ secrets.THUNDERSTORE_TOKEN }}
-        name: ${{ steps.set-result.outputs.result["name"] }} 
-        description: ${{ steps.set-result.outputs.result["description"] }} 
-        version: ${{ steps.set-result.outputs.result["version_number"] }} 
+        name: ${{ steps.set-result.outputs.result['name'] }} 
+        description: ${{ steps.set-result.outputs.result['description'] }} 
+        version: ${{ steps.set-result.outputs.result['version_number'] }} 
         community: zelda-64-recompiled
         file: ${{ steps.set-result.outputs.result.name }}.thunderstore.zip
         categories: | 
