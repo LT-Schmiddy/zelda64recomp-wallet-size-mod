@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      ref: ${{ github.event.pull_request.head.sha || github.ref }}
-      submodules: recursive
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        submodules: recursive
     - name: Set up build tools
       run: |-
         sudo apt install -y clang lld ninja-build python3
