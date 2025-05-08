@@ -41,18 +41,18 @@ jobs:
       with:
         namespace: LT_Schmiddy 
         token: ${{ secrets.THUNDERSTORE_TOKEN }}
-        name: ${{ steps.set-result.outputs.result['name'] }} 
-        description: ${{ steps.set-result.outputs.result['description'] }} 
-        version: ${{ steps.set-result.outputs.result['version_number'] }} 
+        name: ${{ steps.read-package-info.outputs.result['name'] }} 
+        description: ${{ steps.read-package-info.outputs.result['description'] }} 
+        version: ${{ steps.read-package-info.outputs.result['version_number'] }} 
         community: zelda-64-recompiled
-        file: ${{ steps.set-result.outputs.result.name }}.thunderstore.zip
+        file: ${{ steps.read-package-info.outputs.result.name }}.thunderstore.zip
         categories: | 
           mods
           
     - name: publish-github-release
       uses: softprops/action-gh-release@v2
       with:
-        name: ${{ steps.set-result.outputs.result.version_number }}
+        name: ${{ steps.read-package-info.outputs.result.version_number }}
         body_path: ${{ github.workspace }}/thunderstore_package/CHANGELOG.md
         files: |
           ./build/*.nrm
