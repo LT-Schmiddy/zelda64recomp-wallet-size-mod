@@ -7,13 +7,17 @@
 #include "eztr_api.h"
 #include "x_eztr_msg_macros.h"
 
+extern s16 sRupeeDigitsCount[];
+extern s16 sRupeeDigitsFirst[];
+
 RECOMP_CALLBACK("*", recomp_after_play_init) void modify_upgrade_table(PlayState* this) {
 
     gUpgradeCapacities[UPG_WALLET][0] = 200;
     gUpgradeCapacities[UPG_WALLET][1] = 500;
     gUpgradeCapacities[UPG_WALLET][2] = 999;
     gUpgradeCapacities[UPG_WALLET][3] = 999;
-
+    sRupeeDigitsFirst[0] = 0;
+    sRupeeDigitsCount[0] = 3;
 }
 
 EZTR_ON_INIT void set_wallet_messages() {
