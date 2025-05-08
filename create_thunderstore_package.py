@@ -46,7 +46,7 @@ def create_manifest(path: Path):
     path.write_text(json.dumps(get_default_package_manifest(), indent=4))
    
  
-def update_manifest(path: Path):
+def update_manifest(path: Path) -> dict[str, str]:
     print(f"Updating manifest at '{path}'...")
     current_manifest: dict[str, str] = json.loads(path.read_text());
     current_manifest.update({
@@ -54,6 +54,8 @@ def update_manifest(path: Path):
         "description":  bm.mod_data["manifest"]["short_description"],
     })
     path.write_text(json.dumps(current_manifest, indent=4))
+    
+    return current_manifest
 
 
 def create_readme(path: Path):
@@ -101,8 +103,8 @@ def create_package():
     manifest_file = package_dir.joinpath("manifest.json")
     if not manifest_file.is_file():
         create_manifest(manifest_file)
-    else: 
-        update_manifest(manifest_file)
+    
+    manifest = update_manifest(manifest_file)
         
     readme_file = package_dir.joinpath("README.md")
     if not readme_file.is_file():
@@ -117,7 +119,7 @@ def create_package():
     
     if fully_collected:
         print("Fully collected. Zipping mod package.")
-        create_archive(package_dir, bm.project_root.joinpath(f"{bm.mod_data['inputs']['mod_filename']}.thunderstore.zip"))
+        create_archive(package_dir, bm.project_root.joinpath(f"{manifest["name"]}.thunderstore.zip"))
     else:
         print("Files are missing.")
     

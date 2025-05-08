@@ -1,0 +1,63 @@
+name: Build and Publish mod
+on:
+  push:
+    tags:
+      - "release-*.*.*"
+jobs:
+  build:
+    outputs:
+      thunderstore-package: ${{ steps.create-thunderstore-package.outputs.artifact-id }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up build tools
+      run: |-
+        sudo apt install -y clang lld ninja-build python
+    - name: run-buildscript
+      run: |-
+        python3 ./create_thunderstore_package.py
+
+    - name: read-package-info
+      uses: actions/github-script@v6
+      id: read-package-info
+      with:
+        result-encoding: string
+        script: |
+          try {
+            const fs = require('fs');
+            const jsonString = fs.readFileSync('/thunderstore_package/manifest.json');
+            var manifest = JSON.parse(jsonString);
+
+            return manifest;
+          } catch(err) {
+            core.error("Error while reading or parsing the JSON");
+            core.setFailed(err);
+          }
+
+    - name: create-thunderstore-package
+      uses: actions/upload-artifact@v4
+      with:
+        name: ThunderstorePackage
+        path: |
+          ./thunderstore_package/*
+
+    - uses: GreenTF/upload-thunderstore-package@v4.3
+      with:
+        namespace: LT_Schmiddy # the thunderstore 'team' to publish under
+        token: ${{ secrets.THUNDERSTORE_TOKEN }}
+        description: ${{ steps.set-result.outputs.result.description }} 
+        name: ${{ steps.set-result.outputs.result.name }} # the name of the package
+        version: ${{ steps.set-result.outputs.result.version_number }} # Use the tag as the package version
+        community: zelda-64-recompiled
+        categories: | # <-- notice this pipe character
+          mods
+          
+    - name: publish-release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: ${{ steps.set-result.outputs.result.version_number }}
+        body_path: ${{ github.workspace }}/thunderstore_package/CHANGELOG.md
+        files: |
+          ./build/*.nrm
+        make_latest: true
+    
