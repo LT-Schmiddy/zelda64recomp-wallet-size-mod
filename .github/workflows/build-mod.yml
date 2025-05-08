@@ -30,7 +30,7 @@ jobs:
             const fs = require('fs');
             const jsonString = fs.readFileSync('./thunderstore_package/manifest.json');
             var manifest = JSON.parse(jsonString);
-
+            console.log(manifest)
             return manifest;
           } catch(err) {
             core.error("Error while reading or parsing the JSON");
@@ -56,7 +56,7 @@ jobs:
         categories: | # <-- notice this pipe character
           mods
           
-    - name: publish-release
+    - name: publish-github-release
       uses: softprops/action-gh-release@v2
       with:
         name: ${{ steps.set-result.outputs.result.version_number }}
