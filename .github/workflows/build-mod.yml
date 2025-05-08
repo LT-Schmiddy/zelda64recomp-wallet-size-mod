@@ -49,6 +49,7 @@ jobs:
         name: ${{ steps.set-result.outputs.result.name }} # the name of the package
         version: ${{ steps.set-result.outputs.result.version_number }} # Use the tag as the package version
         community: zelda-64-recompiled
+        file: ${{ steps.set-result.outputs.result.name }}.thunderstore.zip
         categories: | # <-- notice this pipe character
           mods
           
