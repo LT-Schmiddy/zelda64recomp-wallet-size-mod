@@ -37,23 +37,16 @@ jobs:
             core.setFailed(err);
           }
 
-    - name: create-thunderstore-package
-      uses: actions/upload-artifact@v4
-      with:
-        name: ThunderstorePackage
-        path: |
-          ./thunderstore_package/*
-
     - uses: GreenTF/upload-thunderstore-package@v4.3
       with:
-        namespace: LT_Schmiddy # the thunderstore 'team' to publish under
+        namespace: LT_Schmiddy 
         token: ${{ secrets.THUNDERSTORE_TOKEN }}
-        description: ${{ steps.set-result.outputs.result.description }} 
-        name: ${{ steps.set-result.outputs.result.name }} # the name of the package
-        version: ${{ steps.set-result.outputs.result.version_number }} # Use the tag as the package version
+        name: ${{ steps.set-result.outputs.result["name"] }} 
+        description: ${{ steps.set-result.outputs.result["description"] }} 
+        version: ${{ steps.set-result.outputs.result["version_number"] }} 
         community: zelda-64-recompiled
         file: ${{ steps.set-result.outputs.result.name }}.thunderstore.zip
-        categories: | # <-- notice this pipe character
+        categories: | 
           mods
           
     - name: publish-github-release
@@ -64,4 +57,11 @@ jobs:
         files: |
           ./build/*.nrm
         make_latest: true
+
+    - name: upload-artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ThunderstorePackage
+        path: |
+          ./thunderstore_package/*
     
